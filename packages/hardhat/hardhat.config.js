@@ -60,6 +60,15 @@ module.exports = {
   // Follow the directions, and uncomment the network you wish to deploy to.
 
   networks: {
+    hardhat: {
+      forking: {
+        url: "https://eth-sepolia.g.alchemy.com/v2/Ejxd3o1JAwdP6X67VxVwAMW1zcVmTKn3",
+        // accounts: [`0x${PRIVATE_KEY}`]
+        // polygon mainnet fork
+        // url:"https://polygon-rpc.com/",
+        // blockNumber: 42682766
+      },
+    },
     localhost: {
       url: "http://127.0.0.1:8545/",
       /*
@@ -67,6 +76,18 @@ module.exports = {
         (you can put in a mnemonic here to set the deployer locally)
 
       */
+      forking: {
+        url: "https://eth-sepolia.g.alchemy.com/v2/Ejxd3o1JAwdP6X67VxVwAMW1zcVmTKn3",
+        // accounts: [`0x${PRIVATE_KEY}`]
+        // polygon mainnet fork
+        // url:"https://polygon-rpc.com/",
+        // blockNumber: 42682766
+      },  
+    },
+    scrollTestnet: {
+      url: process.env.SCROLL_TESTNET_URL || "",
+      accounts:
+        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
     mainnet: {
       url: "https://mainnet.infura.io/v3/460f40a260564ac4a4f4b3fffb032dad", // <---- YOUR INFURA ID! (or it won't work)
