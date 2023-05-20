@@ -1,10 +1,17 @@
 const hre = require("hardhat");
 
 async function main() {
-  const lottery = await hre.ethers.getContractFactory("Lottery");
-  const Lottery = await lottery.deploy("0xdb46d1dc155634fbc732f92e853b10b288ad5a1d","0xdb46d1dc155634fbc732f92e853b10b288ad5a1d", "0x6B175474E89094C44Da98b954EedeAC495271d0F", "0xab7FA2B2985BCcfC13c6D86b1D5A17486ab1e04C");
-  await Lottery.deployed();
-  console.log('Deployed Lottery Address:', Lottery.address);
+  const MockWEth = await hre.ethers.getContractFactory("MockWEth");
+  let mockWEth = await MockWEth.deploy();
+  console.log('Deployed mockWEth Address:', mockWEth.address);
+
+  const TokenizedVault = await hre.ethers.getContractFactory("TokenizedVault");
+  let tokenizedVault = await TokenizedVault.deploy(mockWEth.address);
+  console.log('Deployed tokenizedVault Address:', tokenizedVault.address);
+  
+  const SurpriseBagNFT = await hre.ethers.getContractFactory("SurpriseBagNFT");
+  let surpriseBagNFT = await SurpriseBagNFT.deploy("0x02101dfB77FDE026414827Fdc604ddAF224F0921", mockWEth.address, tokenizedVault.address);
+  console.log('Deployed surpriseBagNFT Address:', surpriseBagNFT.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
