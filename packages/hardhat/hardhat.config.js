@@ -88,8 +88,9 @@ module.exports = {
     },
     scrollTestnet: {
       url: process.env.SCROLL_TESTNET_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+      accounts: [`0x${PRIVATE_KEY}`]
+      // accounts: 
+      //   process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
     mainnet: {
       url: "https://mainnet.infura.io/v3/460f40a260564ac4a4f4b3fffb032dad", // <---- YOUR INFURA ID! (or it won't work)
@@ -121,9 +122,11 @@ module.exports = {
     },
     goerli: {
       url: "https://goerli.infura.io/v3/460f40a260564ac4a4f4b3fffb032dad", // <---- YOUR INFURA ID! (or it won't work)
-      accounts: {
-        mnemonic: mnemonic(),
-      },
+      accounts: [`0x${PRIVATE_KEY}`]
+
+      // accounts: {
+      //   mnemonic: mnemonic(),
+      // },
     },
     sepolia: {
       url: "https://eth-sepolia.g.alchemy.com/v2/Ejxd3o1JAwdP6X67VxVwAMW1zcVmTKn3",
@@ -336,8 +339,19 @@ module.exports = {
       rinkeby: "DNXJA8RX2Q3VZ4URQIWP7Z68CJXQZSC6AW",
       ropsten: "DNXJA8RX2Q3VZ4URQIWP7Z68CJXQZSC6AW",
       sepolia: "DNXJA8RX2Q3VZ4URQIWP7Z68CJXQZSC6AW",
+      scrollAlpha: 'abc',
       // add other network's API key here
     },
+    customChains: [
+      {
+        network: 'scrollAlpha',
+        chainId: 534353,
+        urls: {
+          apiURL: 'https://blockscout.scroll.io/api',
+          browserURL: 'https://blockscout.scroll.io/',
+        },
+      },
+    ],
   },
   abiExporter: {
     path: "../react-app/src/contracts/ABI",
