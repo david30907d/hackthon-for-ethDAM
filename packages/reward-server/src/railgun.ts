@@ -4,7 +4,7 @@ import {
     getShieldPrivateKeySignatureMessage,
     populateShieldBaseToken,
     startRailgunEngine,
-    populateProvedTransfer
+    populateProvedTransfer, generateTransferProof
 } from "@railgun-community/quickstart";
 import {Level} from "level";
 import {
@@ -161,13 +161,7 @@ export interface PrivateTransfer{
     mnemonic:string
     memoText:string
 }
-export async function privateTransfer(req: PrivateTransfer){
-    const creationBlockNumberMap= {
-        [NetworkName.Ethereum]: 15725700,
-        [NetworkName.Polygon]: 3421400,
-    }
-    const wallet=await createRailgunWallet(req.encryptionKey,"",creationBlockNumberMap)
-
+export async function privateTransfer(wallet: Wallet,req: PrivateTransfer){
     // Gas price, used to calculate Relayer Fee iteratively.
     const originalGasDetailsSerialized: TransactionGasDetailsSerialized = {
         evmGasType: EVMGasType.Type2, // Depends on the chain (BNB uses type 0)
@@ -185,10 +179,6 @@ export async function privateTransfer(req: PrivateTransfer){
 // Whether to use a Relayer or self-signing wallet.
 // true for self-signing, false for Relayer.
     const sendWithPublicWallet = false;
-    const wrappedERC20Amount: RailgunERC20Amount = {
-        tokenAddress: req.tokenAddress,
-        amountString: req.amount,
-    };
 
     const erc20AmountRecipients: RailgunERC20AmountRecipient[] = [
         {
@@ -197,7 +187,31 @@ export async function privateTransfer(req: PrivateTransfer){
             recipientAddress: req.toAddress,
         },
     ];
-    const {serializedTransaction, error} = await populateProvedTransfer(
+
+    const overallBatchMinGasPrice = '0x10000';
+
+    const progressCallback = (progress: number) => {
+        // Handle proof progress (show in UI).
+        // Proofs can take 20-30 seconds on slower devices.
+    };
+
+    const {error:genTransferErr} = await generateTransferProof(
+        req.network,
+        req.railgunWalletID,
+        req.encryptionKey,
+        true,
+        req.memoText,
+        erc20AmountRecipients,
+        [], // nftAmountRecipients
+        feeTokenDetails,
+        sendWithPublicWallet,
+        overallBatchMinGasPrice,
+        progressCallback,
+    );
+    if (genTransferErr) {
+        console.log(`generateTransferProof: ${genTransferErr}`)
+    }
+    let {serializedTransaction, error} = await populateProvedTransfer(
         req.network,
         req.railgunWalletID,
         true,
@@ -213,4 +227,7 @@ export async function privateTransfer(req: PrivateTransfer){
         console.log(`populateProvedTransfer:${error}`)
         return
     }
+    const txnReq = deserializeTransaction(serializedTransaction,null,await wallet.getChainId());
+    const res=await wallet.sendTransaction(txnReq);
+    await res.wait()
 }

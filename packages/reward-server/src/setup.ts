@@ -30,29 +30,14 @@ async function main() {
         true,
     );
     const provider = new ethers.providers.JsonRpcProvider(RPC_ENDPOINT)
-    const iface = new ethers.utils.Interface([
-        "event TokensClaimed(string railgunwallet)"
-    ])
-    const topics = [iface.getEventTopic("TokensClaimed")]
-    const event = {
-        topics, address: AIRDROP_ADDRESS
+    const shieldReq = {
+        tokenAddress: REWARD_TOKEN_ADDRESS,
+        amount: '0x10',
+        railgunAddress: RAILGUN_WALLET_ADDRESS,
+        network: NetworkName.Ethereum,
     }
     const wallet=new Wallet(ADMIN_PRIVATE_KEY,provider)
-    provider.on(event, async (railgunwallet) => {
-        console.log(railgunwallet)
-        const transferReq = {
-            tokenAddress: REWARD_TOKEN_ADDRESS,
-            amount: '0x10',
-            fromAddress: RAILGUN_WALLET_ADDRESS,
-            toAddress: railgunwallet,
-            network: NetworkName.Ethereum,
-            memoText: "fuck",
-            railgunWalletID: RAILGUN_WALLET_ID,
-            encryptionKey: RAILGUN_WALLET_ENCRYTIONKEY,
-            mnemonic: RAILGUN_WALLET_MNEMONIC,
-        }
-        await privateTransfer(wallet,transferReq)
-    })
+    await shield(wallet, shieldReq)
 }
 
 main()
