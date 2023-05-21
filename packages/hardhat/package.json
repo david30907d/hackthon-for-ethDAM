@@ -23,6 +23,7 @@
     "@types/mocha": "^9.1.0",
     "chai": "^4.2.0",
     "chalk": "^4.1.0",
+    "concurrently": "^8.0.1",
     "dotenv": "^8.2.0",
     "ethers": "^5.4.4",
     "hardhat": "^2.10.2",
@@ -48,6 +49,7 @@
     "send": "hardhat send",
     "generate": "hardhat generate",
     "account": "hardhat account",
-    "verify": "hardhat verify"
+    "verify": "hardhat verify",
+    "testnode": "concurrently --kill-others-on-fail \"npx hardhat node --no-deploy --network hardhat --fork https://mainnet.infura.io/v3/460f40a260564ac4a4f4b3fffb032dad\""
   }
 }

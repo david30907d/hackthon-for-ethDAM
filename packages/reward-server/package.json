@@ -1,0 +1,25 @@
+{
+  "name": "reward-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "ts-node src/app.ts"
+  },
+  "keywords": [],
+  "author": "daiwanwei",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.2.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "@railgun-community/quickstart": "^4.4.4",
+    "@railgun-community/shared-models": "^4.2.2",
+    "dotenv": "^16.0.3",
+    "ethers": "5.7.1",
+    "level": "^8.0.0"
+  }
+}
