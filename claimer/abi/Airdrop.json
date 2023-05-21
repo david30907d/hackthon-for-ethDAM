@@ -1,0 +1,34 @@
+{
+    "abi": [
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": false,
+                    "internalType": "string",
+                    "name": "railgunwallet",
+                    "type": "string"
+                }
+            ],
+            "name": "TokensClaimed",
+            "type": "event"
+        },
+        {
+            "inputs": [],
+            "name": "claimTokens",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }
+    ],
+    "devdoc": {
+        "kind": "dev",
+        "methods": {},
+        "version": 1
+    },
+    "userdoc": {
+        "kind": "user",
+        "methods": {},
+        "version": 1
+    }
+}
