@@ -27,3 +27,10 @@ Deployed surpriseBagNFT Address: 0x6093480B61B068E57260cB0827A001BF91748e0F
         ![](./packages/hardhat/depositToVault.png)
     5. `tokenizedVault.balanceOf`: 這邊可以檢查 NFT 錢包的 vault(erc 4626) 是不是真的有收到剛剛那筆錢，有的話就成功囉
         ![](./packages/hardhat/balanceOf.png)
+
+### Reward Server
+```mermaid
+graph LR
+    A(user claim NFT) --> B(reward server receive claim event)
+    B --> C(use railgun to send the reward token to the user)
+```
